@@ -1,16 +1,20 @@
+from datetime import datetime
 import socket
 import threading
 
-host = '127.0.0.1'
-port = 55555
-
-# Start the server
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((host, port))
-server.listen(0)
+host = '127.0.0.1'
+port = None
 
 clients = []
 clientnicknames = []
+
+def connect():
+    # Start the server
+    server.bind((host, int(port)))
+    server.listen(0)
+    print("AVeryQuickConversation server started.")
+    acceptclients()
 
 def broadcastmessage(message):
     # Send the message to all clients
@@ -30,11 +34,11 @@ def handleclient(client):
             clients.remove(client)
             clients.close()
             clientnickname = clientnicknames[index]
-            broadcastmessage('{} left the chat.'.format(clientnickname).encode('ascii'))
+            broadcastmessage(datetime.now() + ": {} disconnected from the chat server.".format(clientnickname).encode('ascii'))
             clientnicknames.remove(clientnickname)
             break
 
-def connectclient():
+def acceptclients():
     while True:
         # Accept a connection from a client
         client, address = server.accept()
@@ -44,11 +48,11 @@ def connectclient():
         nickname = client.recv(1024).decode('ascii')
         clientnicknames.append(nickname)
         clients.append(client)
-        broadcastmessage("{} joined the chat.".format(nickname).encode('ascii'))
+        broadcastmessage(datetime.now() + ": {} connected to the chat server.".format(nickname).encode('ascii'))
 
         # Create a thread to handle the client
         thread = threading.Thread(target=handleclient, args=(client,))
         thread.start()
 
-print("Server started.")
-connectclient()
+port = input("Enter port to listen on: ")
+connect()
