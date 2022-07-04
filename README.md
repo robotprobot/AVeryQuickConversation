@@ -1,5 +1,5 @@
 # AVeryQuickConversation
-AVeryQuickConversation is a simple text chat server and client
+AVeryQuickConversation is a simple text chat server and client.
 
 ### What ACTUALLY is AVeryQuickConversation?
 AVeryQuickConversation is a server and client that allows users to send text messages to the server and read messages from the server. 
