@@ -34,7 +34,7 @@ def handleclient(client):
             clients.remove(client)
             clients.close()
             clientnickname = clientnicknames[index]
-            broadcastmessage(datetime.now() + ": {} disconnected from the chat server.".format(clientnickname).encode('ascii'))
+            broadcastmessage("{} disconnected from the chat server.".format(clientnickname).encode('ascii'))
             clientnicknames.remove(clientnickname)
             break
 
@@ -48,7 +48,7 @@ def acceptclients():
         nickname = client.recv(1024).decode('ascii')
         clientnicknames.append(nickname)
         clients.append(client)
-        broadcastmessage(datetime.now() + ": {} connected to the chat server.".format(nickname).encode('ascii'))
+        broadcastmessage("{} connected to the chat server.".format(nickname).encode('ascii'))
 
         # Create a thread to handle the client
         thread = threading.Thread(target=handleclient, args=(client,))
